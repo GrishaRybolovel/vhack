@@ -1,0 +1,69 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Письма</h1>
+        <p class="mb-4">{{ type }}</p>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Письма</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Описание</th>
+                            <th>Отправитель</th>
+                            <th>Дата письма</th>
+                            <th>Дата регистрации</th>
+                            <th>Номер</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Описание</th>
+                            <th>Отправитель</th>
+                            <th>Дата письма</th>
+                            <th>Дата регистрации</th>
+                            <th>Номер</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for mail in mails %}
+                            {% if type == mail.type%}
+                                <tr>
+                                    <td><a color="#1cc88a" class="btn btn-primary btn-sm"
+                                           href="{% url 'get_mail_by_id' id=mail.id %}"
+                                           class="label label-table label-success ">{{ mail.id }}</a></td>
+                                    <td>{{ mail.name }}</td>
+                                    <td>{{ mail.naming }}</td>
+                                    <td>{{ mail.created }}</td>
+                                    <td>{{ mail.date_reg }}</td>
+                                    <td>{{ object.number }}</td>
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if request.user.is_superuser %}
+                        <div class="m-t-20">
+                            <a href="#">
+                                <button type="submit" class="btn btn-success waves-effect waves-light m-l-10 btn-md"
+                                        name="isSaved" value="1">+Добавить письмо
+                                </button>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

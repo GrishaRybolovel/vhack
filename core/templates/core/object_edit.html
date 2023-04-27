@@ -1,0 +1,312 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <!-- Base container-->
+    <div class="container-fluid">
+
+        <!-- Card header-->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">Карточка объекта</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Object editor card-->
+        <div class="col-xl-12 col-md-6 mb-4">
+
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <form class="form-horizontal" role="form" method="POST">
+                        {% csrf_token %}
+                        <div class="col-sm-12">
+                            <div class="card-box">
+                                <div class="h4 mb-0 font-weight-bold text-gray-800">{{ object.name }}</div>
+                                <p class="text-muted m-b-30 font-13">Редактирование объекта</p>
+
+
+                                <div class="row">
+
+
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Тип объекта</label>
+                                            <div class="col-md-8">
+                                                {{ form.proj_type }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Название</label>
+                                            <div class="col-md-8">
+                                                {{ form.name }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Регистрационный №
+                                                ОПО</label>
+                                            <div class="col-md-8">
+                                                {{ form.reg_num }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label" for="example-email">Договор</label>
+                                            <div class="col-md-8">
+                                                {{ form.contract }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Дата договора</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    {{ form.date_creation }}
+                                                    <span class="input-group-addon bg-primary b-0 text-white"><i
+                                                            class="icon-calender"></i></span>
+                                                </div><!-- input-group -->
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Дата (для
+                                                оповещений)</label>
+
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    {{ form.date_notification }}
+                                                    <span class="input-group-addon bg-primary b-0 text-white"><i
+                                                            class="icon-calender"></i></span>
+                                                </div><!-- input-group -->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Тип объекта</label>
+                                            <div class="col-md-8">
+                                                {{ form.object_type }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Адрес</label>
+                                            <div class="col-md-8">
+                                                {{ form.address }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Контактный
+                                                человек</label>
+                                            <div class="col-md-8">
+                                                {{ form.contact }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Контактный
+                                                телефон</label>
+                                            <div class="col-md-8">
+                                                {{ form.phone }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Контактный
+                                                e-mail</label>
+                                            <div class="col-md-8">
+                                                {{ form.email }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Статус
+                                                объекта</label>
+                                            <div class="col-md-8">
+                                                {{ form.status }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Сезонность</label>
+                                            <div class="col-md-8">
+                                                {{ form.seasoning }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Цена
+                                                обслуживания</label>
+                                            <div class="col-md-8">
+                                                {{ form.cost }}
+                                            </div>
+                                        </div>
+
+
+                                    </div>
+
+
+                                </div>
+
+                                {% if request.user.is_superuser %}
+                                    <div class="m-t-20">
+                                        <button type="submit"
+                                                class="btn btn-success waves-effect waves-light m-l-10 btn-md"
+                                                name="isSaved" value="1">Сохранить
+                                        </button>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </form>
+                    {{ form.errors }}
+                </div>
+            </div>
+        </div>
+        {% if object %}
+            <!-- Object editor card-->
+            <div class="col-xl-12 col-md-6 mb-4">
+
+                <div class="card shadow h-100 py-2">
+                    <div class="card-body">
+                        <form class="form-horizontal" role="form" method="POST"
+                              action="{% url 'employee_project' id=object.id %}">
+                            {% csrf_token %}
+                            <div class="col-sm-12">
+                                <div class="card-box">
+                                    <div class="h4 mb-4 font-weight-bold text-gray-800">Ответственные лица</div>
+
+                                    <table id="datatable" class="table table-bordered">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                        {% for emp in object.employee %}
+                                            <tr>
+                                                <td>{{ emp }}<small>({{ emp.get_role }})</small></td>
+                                                {% if request.user.is_superuser %}
+                                                    <td width="80">
+                                                        <button type="submit" name="isSaved" value="{{ emp.id }}"
+                                                                class="btn btn-danger btn-sm">
+                                                            Удалить
+                                                        </button>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% if request.user.is_superuser %}
+                                        <select name="worker" class="form-control mb-3" id="id_status">
+                                            <option selected hidden>Добавить сотрудника</option>
+                                            {% for employee in employees %}
+                                                <option value="{{ employee.id }}">{{ employee }}({{ employee.get_role }})</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="m-t-20">
+                                            <button type="submit"
+                                                    class="btn btn-success waves-effect waves-light m-l-10 btn-md"
+                                                    name="isSaved" value="-1">Добавить
+                                            </button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document card-->
+            <div class="col-xl-12 col-md-6 mb-4">
+
+                <div class="card shadow h-100 py-2">
+                    <div class="card-body">
+                        <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-sm-12">
+                                <div class="card-box">
+                                    <div class="h4 mb-4 font-weight-bold text-gray-800">Документы</div>
+                                <div class="table-responsive">
+                                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                        <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Название документа</th>
+                                            <th>Тип договора</th>
+                                            <th>Статус</th>
+                                            <th>Срок действия</th>
+                                            <th>Ссылка</th>
+                                            <th>Удалить</th>
+                                        </tr>
+                                        </thead>
+                                        <tfoot>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Название документа</th>
+                                            <th>Тип договора</th>
+                                            <th>Статус</th>
+                                            <th>Срок действия</th>
+                                            <th>Ссылка</th>
+                                            <th>Удалить</th>
+                                        </tr>
+                                        </tfoot>
+                                        <tbody>
+                                        {% for document in documents %}
+                                            <tr>
+                                                <td>
+                                                    <a class="btn btn-primary btn-sm"
+                                                       href="{% url 'document_edit' id_doc=document.id id_proj=object.id %}">
+                                                        {{ document.id }}
+                                                    </a>
+                                                </td>
+                                                <td>{{ document.name }}</td>
+                                                <td>{{ document.get_doc_type_display }}</td>
+                                                <td>{{ document.get_status_display }}</td>
+                                                <td>{{ document.duration.isoformat }}</td>
+                                                <td>
+                                                    {% if document.doc %}
+                                                        <a class="btn btn-primary btn-sm" href="{{ document.doc.url }}"
+                                                           download="{{ document.doc.url }}">
+                                                            Скачать
+                                                        </a>
+                                                    {% else %}
+                                                        <button class="btn btn-primary btn-sm">
+                                                            Нет файла
+                                                        </button>
+                                                    {% endif %}
+                                                </td>
+                                                {% if request.user.is_superuser %}
+                                                    <td>
+                                                        <a class="btn btn-danger btn-sm"
+                                                           href="{% url 'document_del' id_doc=document.id id_proj=object.id %}">
+                                                            Удалить
+                                                        </a>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                    <div class="m-t-20">
+                                        <a href="{% url 'document_edit' id_doc=0 id_proj=object.id %}"
+                                           class="btn btn-success waves-effect waves-light m-l-10 btn-md">+Добавить
+                                            документ
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            {% if request.user.is_superuser %}
+                <div class="m-t-20">
+                    <a href="{% url 'object_del' id=object.id %}"
+                       onclick="return confirm('Вы точно хотите удалить объект?')"
+                       class="btn btn-danger waves-effect waves-light m-l-10 btn-md">Удалить объект
+                    </a>
+                </div>
+            {% endif %}
+            </div>
+        {% endif %}
+{% endblock %}

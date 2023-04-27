@@ -1,0 +1,403 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="mb-5 ml-3"><h3><b>Моя сводка</b></h3></div>
+        <div class="container-fluid">
+            <div id="accordion" class="card shadow h-100 py-2 mb-5">
+                <div class="ml-4">
+                    <div id="headingOne">
+                                <div class="h4 mb-4 font-weight-bold text-gray-800"
+                                     class="btn" data-toggle="collapse" data-target="#collapseOne"
+                                     aria-expanded="true" aria-controls="collapseOne"
+                                >Документы объектов⇕</div>
+                                <label style="color:#e74a3b">Документы подходящие к концу срока годности (30 дней)</label>
+                    </div>
+                <div class="card-body">
+                <div class="table-responsive">
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Название объекта</th>
+                                    <th>Название документа</th>
+                                    <th>Статус</th>
+                                    <th>Срок действия</th>
+                                    <th>Ссылка</th>
+                                </tr>
+                                </thead>
+                                <tfoot>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Название объекта</th>
+                                    <th>Название документа</th>
+                                    <th>Статус</th>
+                                    <th>Срок действия</th>
+                                    <th>Ссылка</th>
+                                </tr>
+                                </tfoot>
+                                <tbody>
+                                {% for document in docs %}
+                                    <tr>
+                                        <td>{{ document.doc.id }}</td>
+                                        <td><a class="btn btn-primary btn-sm"
+                                               href="{% url 'card' id=document.obj.id %}">
+                                            {{ document.obj.name }}
+                                        </a></td>
+                                        <td>{{ document.doc.name }}</td>
+                                        <td>{{ document.doc.get_status_display }}</td>
+                                        <td>
+                                            <div type="button" class="btn btn-danger rounded-circle">!</div>
+                                            {{ document.doc.duration.isoformat }}</td>
+                                        <td>
+                                            {% if document.doc.doc %}
+                                                <a class="btn btn-primary btn-sm" href="{{ document.doc.doc.url }}"
+                                                   download="{{ document.doc.doc.url }}">
+                                                    Скачать
+                                                </a>
+                                            {% else %}
+                                                <button class="btn btn-primary btn-sm">
+                                                    Нет файла
+                                                </button>
+                                            {% endif %}
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                    </div>
+                </div>
+                </div>
+                </div>
+
+            </div>
+
+            <!-- Content Row -->
+
+            <div class="column">
+                {% if t1 > 0 or t2 > 0 %}
+                    <h4><b>Эксплуатация</b></h4>
+                    {% if t1 > 0 %}
+                        <h5> Задачи в процессе:</h5>
+                        <div class="row">
+                            {% for object in tasks %}
+                                {% if object.get_type == 1 %}
+                                    <div class="col-xl-4 col-lg-2">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div
+                                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                                    style="background-color: #f6c23e;">
+                                                <h6 class="m-0 font-weight-bold"
+                                                    style="color: #f8f9fc;">{{ object.name }}
+                                                    | {{ object.created.isoformat }}</h6>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <div class="chart-area" , style="height: 10rem">
+                                                    <h6></h6>
+                                                    <h6><b>Посл. сообщение</b></h6>
+                                                    <p></p>
+                                                    <p> {{ object.messages.last.author.surname }} {{ object.messages.last.author.name }} {{ object.messages.last.author.last_name }}:</p>
+                                                    {{ object.messages.last.message }}
+                                                </div>
+                                                <a href="{% url 'task' id=object.id %}"
+                                                   class="btn btn-warning mr-auto mb-auto">Открыть
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if t2 > 0 %}
+                        <h5> Просроченные задачи:</h5>
+                        <div class="row">
+                            {% for object in tasks %}
+                                {% if object.get_type == 2 %}
+                                    <div class="col-xl-4 col-lg-2">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div
+                                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                                    style="background-color: #e74a3b;">
+                                                <h6 class="m-0 font-weight-bold"
+                                                    style="color: #f8f9fc;">{{ object.name }}
+                                                    | {{ object.created.isoformat }}</h6>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <div class="chart-area" , style="height: 10rem">
+                                                    <h6></h6>
+                                                    <h6><b>Посл. сообщение</b></h6>
+                                                    <p></p>
+                                                    <p> {{ object.messages.last.author.surname }} {{ object.messages.last.author.name }} {{ object.messages.last.author.last_name }}:</p>
+                                                    {{ object.messages.last.message }}
+                                                </div>
+                                                <a href="{% url 'task' id=object.id %}"
+                                                   class="btn btn-danger mr-auto mb-auto">Открыть
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if t3 > 0 or t4 > 0 %}
+                    <h4><b>Техническое обслуживание</b></h4>
+                    {% if t3 > 0 %}
+                        <h5> Задачи в процессе:</h5>
+                        <div class="row">
+                            {% for object in tasks %}
+                                {% if object.get_type == 3 %}
+                                    <div class="col-xl-4 col-lg-2">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div
+                                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                                    style="background-color: #f6c23e;">
+                                                <h6 class="m-0 font-weight-bold"
+                                                    style="color: #f8f9fc;">{{ object.name }}
+                                                    | {{ object.created.isoformat }}</h6>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <div class="chart-area" , style="height: 10rem">
+                                                    <h6></h6>
+                                                    <h6><b>Посл. сообщение</b></h6>
+                                                    <p></p>
+                                                    <p> {{ object.messages.last.author.surname }} {{ object.messages.last.author.name }} {{ object.messages.last.author.last_name }}:</p>
+                                                    {{ object.messages.last.message }}
+                                                </div>
+                                                <a href="{% url 'task' id=object.id %}"
+                                                   class="btn btn-warning mr-auto mb-auto">Открыть
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if t4 > 0 %}
+                        <h5> Просроченные задачи:</h5>
+                        <div class="row">
+                            {% for object in tasks %}
+                                {% if object.get_type == 4 %}
+                                    <div class="col-xl-4 col-lg-2">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div
+                                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                                    style="background-color: #e74a3b;">
+                                                <h6 class="m-0 font-weight-bold"
+                                                    style="color: #f8f9fc;">{{ object.name }}
+                                                    | {{ object.created.isoformat }}</h6>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <div class="chart-area" , style="height: 10rem">
+                                                    <h6></h6>
+                                                    <h6><b>Посл. сообщение</b></h6>
+                                                    <p></p>
+                                                    <p> {{ object.messages.last.author.surname }} {{ object.messages.last.author.name }} {{ object.messages.last.author.last_name }}:</p>
+                                                    {{ object.messages.last.message }}
+                                                </div>
+                                                <a href="{% url 'task' id=object.id %}"
+                                                   class="btn btn-danger mr-auto mb-auto">Открыть
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if t5 > 0 or t6 > 0 %}
+                    <h4><b>СМР</b></h4>
+                    {% if t5 > 0 %}
+                        <h5> Задачи в процессе:</h5>
+                        <div class="row">
+                            {% for object in tasks %}
+                                {% if object.get_type == 5 %}
+                                    <div class="col-xl-4 col-lg-2">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div
+                                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                                    style="background-color: #f6c23e;">
+                                                <h6 class="m-0 font-weight-bold"
+                                                    style="color: #f8f9fc;">{{ object.name }}
+                                                    | {{ object.created.isoformat }}</h6>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <div class="chart-area" , style="height: 10rem">
+                                                    <h6></h6>
+                                                    <h6><b>Посл. сообщение</b></h6>
+                                                    <p></p>
+                                                    <p> {{ object.messages.last.author.surname }} {{ object.messages.last.author.name }} {{ object.messages.last.author.last_name }}:</p>
+                                                    {{ object.messages.last.message }}
+                                                </div>
+                                                <a href="{% url 'task' id=object.id %}"
+                                                   class="btn btn-warning mr-auto mb-auto">Открыть
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if t6 > 0 %}
+                        <h5> Просроченные задачи:</h5>
+                        <div class="row">
+                            {% for object in tasks %}
+                                {% if object.get_type == 6 %}
+                                    <div class="col-xl-4 col-lg-2">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div
+                                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                                    style="background-color: #e74a3b;">
+                                                <h6 class="m-0 font-weight-bold"
+                                                    style="color: #f8f9fc;">{{ object.name }}
+                                                    | {{ object.created.isoformat }}</h6>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <div class="chart-area" , style="height: 10rem">
+                                                    <h6></h6>
+                                                    <h6><b>Посл. сообщение</b></h6>
+                                                    <p></p>
+                                                    <p> {{ object.messages.last.author.surname }} {{ object.messages.last.author.name }} {{ object.messages.last.author.last_name }}:</p>
+                                                    {{ object.messages.last.message }}
+                                                </div>
+                                                <a href="{% url 'task' id=object.id %}"
+                                                   class="btn btn-danger mr-auto mb-auto">Открыть
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if t7 > 0 or t8 > 0 %}
+                    <h4><b>Производство</b></h4>
+                    {% if t7 > 0 %}
+                        <h5> Задачи в процессе:</h5>
+                        <div class="row">
+                            {% for object in tasks %}
+                                {% if object.get_type == 7 %}
+                                    <div class="col-xl-4 col-lg-2">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div
+                                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                                    style="background-color: #f6c23e;">
+                                                <h6 class="m-0 font-weight-bold"
+                                                    style="color: #f8f9fc;">{{ object.name }}
+                                                    | {{ object.created.isoformat }}</h6>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <div class="chart-area" , style="height: 10rem">
+                                                    <h6></h6>
+                                                    <h6><b>Посл. сообщение</b></h6>
+                                                    <p></p>
+                                                    <p> {{ object.messages.last.author.surname }} {{ object.messages.last.author.name }} {{ object.messages.last.author.last_name }}:</p>
+                                                    {{ object.messages.last.message }}
+                                                </div>
+                                                <a href="{% url 'task' id=object.id %}"
+                                                   class="btn btn-warning mr-auto mb-auto">Открыть
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    {% if t8 > 0 %}
+                        <h5> Просроченные задачи:</h5>
+                        <div class="row">
+                            {% for object in tasks %}
+                                {% if object.get_type == 8 %}
+                                    <div class="col-xl-4 col-lg-2">
+                                        <div class="card shadow mb-4">
+                                            <!-- Card Header - Dropdown -->
+                                            <div
+                                                    class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                                    style="background-color: #e74a3b;">
+                                                <h6 class="m-0 font-weight-bold"
+                                                    style="color: #f8f9fc;">{{ object.name }}
+                                                    | {{ object.created.isoformat }}</h6>
+                                            </div>
+                                            <!-- Card Body -->
+                                            <div class="card-body">
+                                                <div class="chart-area" , style="height: 10rem">
+                                                    <h6></h6>
+                                                    <h6><b>Посл. сообщение</b></h6>
+                                                    <p></p>
+                                                    <p> {{ object.messages.last.author.surname }} {{ object.messages.last.author.name }} {{ object.messages.last.author.last_name }}:</p>
+                                                    {{ object.messages.last.message }}
+                                                </div>
+                                                <a href="{% url 'task' id=object.id %}"
+                                                   class="btn btn-danger mr-auto mb-auto">Открыть
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% endif %}
+
+                {% if t0 > 0 %}
+                    <h4><b>Закрытые задачи</b></h4>
+                    <div class="row">
+                        {% for object in tasks %}
+                            {% if object.get_type == 0 %}
+                                <div class="col-xl-4 col-lg-2">
+                                    <div class="card shadow mb-4">
+                                        <!-- Card Header - Dropdown -->
+                                        <div
+                                                class="card-header py-3 d-flex flex-row align-items-center justify-content-between"
+                                                style="background-color: #858796;">
+                                            <h6 class="m-0 font-weight-bold" style="color: #f8f9fc;">{{ object.name }}
+                                                | {{ object.created.isoformat }}</h6>
+                                        </div>
+                                        <!-- Card Body -->
+                                        <div class="card-body">
+                                            <div class="chart-area" , style="height: 10rem">
+                                                <h6></h6>
+                                                <h6><b>Посл. сообщение</b></h6>
+                                                <p></p>
+                                                <p> {{ object.messages.last.author.surname }} {{ object.messages.last.author.name }} {{ object.messages.last.author.last_name }}:</p>
+                                                {{ object.messages.last.message }}
+                                            </div>
+                                            <a href="{% url 'task' id=object.id %}"
+                                               class="btn btn-secondary mr-auto mb-auto">Открыть
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+{% endblock %}
+</div>

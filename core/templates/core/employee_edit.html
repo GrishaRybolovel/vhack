@@ -1,0 +1,241 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <!-- Base container-->
+    <div class="container-fluid">
+
+        <!-- Card header-->
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="row no-gutters align-items-center">
+                <div class="col mr-2">
+                    <div class="h5 mb-0 font-weight-bold text-gray-800">Карточка сотрудника</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Object editor card-->
+        <div class="col-xl-12 col-md-6 mb-4">
+
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <form class="form-horizontal" role="form" method="POST">
+                        {% csrf_token %}
+                        <div class="col-sm-12">
+                            <div class="card-box">
+                                <div class="h4 mb-0 font-weight-bold text-gray-800">Редактирование Сотрудника</div>
+                                <p class="text-muted m-b-30 font-13">Редактирование сотрудника</p>
+
+
+                                <div class="row">
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Имя</label>
+                                            <div class="col-md-8">
+                                                {{ form.name }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Фамилия</label>
+                                            <div class="col-md-8">
+                                                {{ form.surname }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Отчество</label>
+                                            <div class="col-md-8">
+                                                {{ form.last_name}}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label" for="example-email">Телефон</label>
+                                            <div class="col-md-8">
+                                                {{ form.phone }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Адрес</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    {{ form.address }}
+                                                    <span class="input-group-addon bg-primary b-0 text-white"><i
+                                                            class="icon-calender"></i></span>
+                                                </div><!-- input-group -->
+                                            </div>
+                                        </div>
+
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Дата рождения</label>
+                                            <div class="col-md-8">
+                                                <div class="input-group">
+                                                    {{ form.date_of_birth }}
+                                                    <span class="input-group-addon bg-primary b-0 text-white"><i
+                                                            class="icon-calender"></i></span>
+                                                </div><!-- input-group -->
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Принят на работу</label>
+                                            <div class="col-md-8">
+                                                {{ form.date_of_start }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Роль</label>
+                                            <div class="col-md-8">
+                                                {{ form.role }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">ИНН</label>
+                                            <div class="col-md-8">
+                                                {{ form.inn }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">СНИЛС</label>
+                                            <div class="col-md-8">
+                                                {{ form.snils }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Паспорт</label>
+                                            <div class="col-md-8">
+                                                {{ form.passport }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Компания</label>
+                                            <div class="col-md-8">
+                                                {{ form.company }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Отделение</label>
+                                            <div class="col-md-8">
+                                                {{ form.division }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Должность</label>
+                                            <div class="col-md-8">
+                                                {{ form.post }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Информация о переводе</label>
+                                            <div class="col-md-8">
+                                                {{ form.info_about_relocate }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Аттестация</label>
+                                            <div class="col-md-8">
+                                                {{ form.attestation }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Повышение квалификации</label>
+                                            <div class="col-md-8">
+                                                {{ form.qualification }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Проф. подготовка</label>
+                                            <div class="col-md-8">
+                                                {{ form.retraining }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Статус</label>
+                                            <div class="col-md-8">
+                                                {{ form.status }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="m-t-20">
+                                    <button type="submit" class="btn btn-success waves-effect waves-light m-l-10 btn-md"
+                                            name="isSaved" value="1">Сохранить
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                    <div class="mt-5">
+                    <form class="form-horizontal" role="form" method="POST">
+                        {% csrf_token %}
+                        <div class="col-sm-12">
+                            <div class="card-box">
+                                <p class="text-muted m-b-30 font-15 font-weight-bold">Редактирование данных об аккаунте</p>
+
+
+                                <div class="row">
+                                    <div class="col-md-6">
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Логин*</label>
+                                            <div class="col-md-8">
+                                                {{ form_user.username }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">E-mail*</label>
+                                            <div class="col-md-8">
+                                                {{ form_user.email }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group" style="visibility: hidden">
+                                            <label class="col-md-4 font-weight-bold control-label">Поменять пароль*</label>
+                                            <div class="col-md-8">
+                                                {{ form_user.password }}
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Поменять пароль*</label>
+                                            <input class="col-md-8 form-control" id="password_change" name="password_change">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+                                <div class="m-t-20">
+                                    <button type="submit" class="btn btn-success waves-effect waves-light m-l-10 btn-md"
+                                            name="isSaved" value="2">Сохранить
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                    </div>
+                    {{ form.errors }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

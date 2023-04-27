@@ -1,0 +1,122 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Структура предприятия</h1>
+        <p class="mb-4">Управления, отделы, группы</p>
+
+        <div class="col-xl-12 col-md-6 mb-4">
+
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                        <div class="col-sm-12">
+                            <div class="card-box">
+                                <div class="h4 mb-0 font-weight-bold text-gray-800">Добавить подразделение</div>
+                                <p class="text-muted m-b-30 font-13">В общую структуру</p>
+
+
+                                <div class="card-body">
+                                    <div class="table-responsive">
+                                        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                            <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th>Количество сотрудников</th>
+                                                <th>Действие</th>
+                                            </tr>
+                                            </thead>
+                                            <tfoot>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Название</th>
+                                                <th>Количество сотрудников</th>
+                                                <th>Действие</th>
+                                            </tr>
+                                            </tfoot>
+                                            <tbody>
+                                            {% for div in divs %}
+                                                <tr>
+                                                    <td>{{ div.id }}</td>
+                                                    {% if div.divis %}
+                                                        <td>&nbsp&nbsp&nbsp&nbsp{{ div.name }}</td>
+                                                    {% else %}
+                                                        <td>{{ div.name }}</td>
+                                                    {% endif %}
+                                                    <td>{{ div.employees_amount }}</td>
+                                                    {% if div.employees_amount == 0 and not div.del_check %}
+                                                        <td>
+                                                            <a class="btn btn-danger btn-sm"
+                                                               href="{% url 'divisions_del' id=div.id%}">
+                                                            Удалить
+                                                            </a>
+                                                        </td>
+                                                    {% else %}
+                                                        <td></td>
+                                                    {% endif %}
+                                                </tr>
+                                            {% endfor %}
+                                            </tbody>
+                                        </table>
+                                    *Удалить можно только подразделение без сотрудников и без вложенных подразделений
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    {{ form.errors }}
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-xl-12 col-md-6 mb-4">
+
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <form class="form-horizontal" role="form" method="POST">
+                        {% csrf_token %}
+                        <div class="col-sm-12">
+                            <div class="card-box">
+                                <div class="h4 mb-0 font-weight-bold text-gray-800">Добавить подразделение</div>
+                                <p class="text-muted m-b-30 font-13">В общую структуру</p>
+
+
+                                <div class="row">
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Название
+                                                подразделения</label>
+                                            <div class="col-md-8">
+                                                {{ form.name }}
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-md-4 font-weight-bold control-label">Родительское
+                                                подразделение</label>
+                                            <div class="col-md-8">
+                                                {{ form.parent_division }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="m-t-20">
+                                    <button type="submit" class="btn btn-success waves-effect waves-light m-l-10 btn-md"
+                                            name="isSaved" value="1">+Добавить элемент
+                                    </button>
+                                </div>
+
+                            </div>
+                        </div>
+                    </form>
+                    {{ form.errors }}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}

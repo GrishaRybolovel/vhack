@@ -1,0 +1,84 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <!-- Document card-->
+        <div class="col-xl-12 col-md-6 mb-4">
+
+            <div class="card shadow h-100 py-2">
+                <div class="card-body">
+                    <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="col-sm-12">
+                            <div class="card-box">
+                                <div class="h4 mb-4 font-weight-bold text-gray-800">Документация</div>
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Название документа</th>
+                                        <th>Тип договора</th>
+                                        <th>Статус</th>
+                                        <th>Срок действия</th>
+                                        <th>Ссылка</th>
+                                        <th>Удалить</th>
+                                    </tr>
+                                    </thead>
+                                    <tfoot>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Название документа</th>
+                                        <th>Тип договора</th>
+                                        <th>Статус</th>
+                                        <th>Срок действия</th>
+                                        <th>Ссылка</th>
+                                        <th>Удалить</th>
+                                    </tr>
+                                    </tfoot>
+                                    <tbody>
+                                    {% for document in docs %}
+                                        <tr>
+                                            <td>
+                                                <a class="btn btn-primary btn-sm"
+                                                   href="{% url 'comp_edit' id_doc=document.id %}">
+                                                {{ document.id }}
+                                                </a>
+                                            </td>
+                                            <td>{{ document.name }}</td>
+                                            <td>{{ document.get_doc_type_display }}</td>
+                                            <td>{{ document.get_status_display }}</td>
+                                            <td>{{ document.duration.isoformat }}</td>
+                                            <td>
+                                                {% if document.doc %}
+                                                    <a class="btn btn-primary btn-sm" href="{{ document.doc.url }}" download="{{ document.doc.url }}">
+                                                        Скачать
+                                                    </a>
+                                                {% else %}
+                                                    <button class="btn btn-primary btn-sm">
+                                                        Нет файла
+                                                    </button>
+                                                {% endif %}
+                                            </td>
+                                            <td>
+                                                <a class="btn btn-danger btn-sm"
+                                                   href="{% url 'comp_del' id_doc=document.id%}">
+                                                Удалить
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="m-t-20">
+                                <a href="{% url 'comp_edit' id_doc=0%}"
+                                   class="btn btn-success waves-effect waves-light m-l-10 btn-md">+Добавить документ
+                                </a>
+                            </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <!-- Begin Page Content -->
+        <div class="container">
+            <h1 align="center" style="font-size: 45px" class="h4 ml-4 mb-5 text-gray-800"> {{ mail.name }}</h1>
+            <div class="row mt-4">
+                <!-- Page Heading -->
+                <div class="column ml-4" style="width: 500px">
+                    <div class="d-sm-flex align-items-center justify-content-between mb-3">
+                        <h3 class="h4 ml-4 mb-1 text-gray-800"> Сообщения</h3>
+                    </div>
+                    {% for message in messages %}
+
+                        <!-- Default Card Example -->
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                {{ message.author.surname }} {{ message.author.name }} {{ message.author.last_name }}
+                                | {{ message.time }}
+                            </div>
+                            <div class="card-body">
+                                <p> {{ message.message }} </p>
+                                {% if message.has_file %}
+                                    <a href="{{ message.doc.url }}" download="{{ message.doc.url }}"> Скачать
+                                        прикрепленный файл </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="column ml-auto mr-3" style="width: 450px">
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-3">
+                        <h3 class="h4 ml-4 mb-1 text-gray-800"> Новое сообщение </h3>
+                    </div>
+                    <div class="card" style="background-color:white">
+                        <form class="form-horizontal" role="form" method="POST" enctype="multipart/form-data">
+                            {% csrf_token %}
+                            <div class="col-sm-12 ml-1 mt-2 mb-2">
+                                <div class="card-box">
+                                    <div class="row ml">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="col-md-4 font-weight-bold control-label">Введите
+                                                    сообщение</label>
+                                                <div class="col-md-8">
+                                                    {{ form.message }}
+                                                </div>
+                                            </div>
+                                            <div class="form-group">
+                                                <label class="col-md-4 font-weight-bold control-label">Приложить
+                                                    документ</label>
+                                                <div class="col-md-8">
+                                                    {{ form.doc }}
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="m-t-20">
+                                        <button type="submit"
+                                                class="btn btn-success waves-effect waves-light m-l-10 btn-md"
+                                                name="isSaved" value="1">Сохранить
+                                        </button>
+                                    </div>
+                                    {{ form.errors }}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+                    <div class="d-sm-flex align-items-center justify-content-between mb-3">
+                        <h3 class="h4 ml-4 mb-1 mt-4 text-gray-800"> Ответственные лица </h3>
+                    </div>
+                    <div class="card" style="background-color:white">
+                        <form class="form-horizontal" role="form" method="POST"
+                              action="{% url 'employee_mail' id=mail.id %}">
+                            {% csrf_token %}
+                            <div class="col-sm-12 ml-1 mt-2 mb-2">
+                                <div class="card-box">
+
+                                    <table id="datatable" class="table table-bordered">
+                                        <thead>
+                                        </thead>
+                                        <tbody>
+                                        {% for emp in mail.employees %}
+                                            <tr>
+                                                <td>{{ emp }}<small>({{ emp.get_role }})</small></td>
+                                                {% if request.user.is_superuser %}
+                                                    <td width="10">
+                                                        <button type="submit" name="isSaved" value="{{ emp.id }}"
+                                                                class="btn btn-danger btn-sm">
+                                                            Удалить
+                                                        </button>
+                                                    </td>
+                                                {% endif %}
+                                            </tr>
+                                        {% endfor %}
+                                        </tbody>
+                                    </table>
+                                    {% if request.user.is_superuser %}
+                                        <select name="worker" class="form-control mb-3" id="id_status">
+                                            <option selected hidden>Добавить сотрудника</option>
+                                            {% for employee in employees %}
+                                                <option value="{{ employee.id }}">{{ employee }}</option>
+                                            {% endfor %}
+                                        </select>
+                                        <div class="m-t-20">
+                                            <button type="submit"
+                                                    class="btn btn-success waves-effect waves-light m-l-10 btn-md"
+                                                    name="isSaved" value="-1">Добавить
+                                            </button>
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="d-sm-flex align-items-center justify-content-between mb-3">
+                        <h3 class="h4 ml-4 mb-1 mt-4 text-gray-800"> Информация о задаче </h3>
+                    </div>
+                    <div class="card mb-4" style="background-color:white">
+                        <p style="margin-left: 20px; margin-top: 10px">
+                            <b>Автор:</b> {{ mail.author.surname }} {{ mail.author.name }} {{ mail.author.last_name }}
+                        </p>
+                        <p style="margin-left: 20px"><b>Дата создания:</b> {{ mail.created }}</p>
+                        <p style="margin-left: 20px"><b>Срок выполнения:</b> {{ mail.completion }}</p>
+                        {% if mail.done %}
+                            <p style="margin-left: 20px"><b>Дата выполнения:</b> {{ mail.done }}</p>
+                            <div type="button"
+                                 class="btn btn-secondary btn-rounded waves-effect waves-light m-l-10 btn-md"
+                                 style="margin-top:10px;margin-left: 100px; margin-right: 100px; margin-bottom: 10px">
+                                Письмо закрыто
+                            </div>
+                        {% elif not mail.done %}
+                            <form class="form-horizontal ml-4 mb-2" role="form" method="POST"
+                                  action="{% url 'employee_mail' id=mail.id %}">
+                                {% csrf_token %}
+                                <button type="submit"
+                                        onclick="return confirm('Вы точно хотите закрыть письмо?')"
+                                        class="btn btn-success waves-effect waves-light m-l-10 btn-md"
+                                        name="isSaved" value="-2">Закрыть письмо
+                                </button>
+                            </form>
+                            {% if request.user.is_superuser %}
+                                <a href="{% url 'mail_edit' id=mail.id%}"
+                                   class="btn btn-success btn-rounded waves-effect waves-light m-l-10 btn-md"
+                                   style="margin-top:10px;margin-left: 100px; margin-right: 100px; margin-bottom: 10px">Редактировать
+                                    письмо</a>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- /.container-fluid -->
+{% endblock %}

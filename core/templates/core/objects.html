@@ -1,0 +1,104 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <h1 class="h3 mb-2 text-gray-800">Объекты</h1>
+        <p class="mb-4">Объекты</p>
+
+        <!-- DataTales Example -->
+        <div class="card shadow mb-4">
+            <div class="card-header py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Объекты</h6>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Договор</th>
+                            <th>Статус</th>
+                            <th>Сезон</th>
+                            <th>Адрес</th>
+                            <th>Дата созд.</th>
+                            <th>Задачи</th>
+                            <th>КИП</th>
+                            <th>ПК</th>
+                            <th>Календарь</th>
+                        </tr>
+                        </thead>
+                        <tfoot>
+                        <tr>
+                            <th>ID</th>
+                            <th>Название</th>
+                            <th>Договор</th>
+                            <th>Статус</th>
+                            <th>Сезон</th>
+                            <th>Адрес</th>
+                            <th>Дата созд.</th>
+                            <th>Задачи</th>
+                            <th>КИП</th>
+                            <th>ПК</th>
+                            <th>Календарь</th>
+                        </tr>
+                        </tfoot>
+                        <tbody>
+                        {% for object in objects %}
+                            <tr>
+                                <td><a color="#1cc88a" class="btn btn-primary btn-sm"
+                                       href="{% url 'card' id=object.id %}"
+                                       class="label label-table label-success ">{{ object.id }}</a></td>
+                                <td>{{ object.name }}</td>
+                                <td>{{ object.contract }}</td>
+                                {% if object.status == 'IWrk' %}
+                                    <td bgcolor="#1cc88a" style="color:#f8f9fc">В работе</td>
+                                {% elif object.status == 'PNR' %}
+                                    <td bgcolor="#f6c23e" style="color:#f8f9fc">ПНР</td>
+                                {% elif object.status == 'SOff' %}
+                                    <td bgcolor="#858796" style="color:#f8f9fc">Сезон откл.</td>
+                                {% elif object.status == 'SMR' %}
+                                    <td bgcolor="#4e73df" style="color:#f8f9fc">СМР</td>
+                                {% elif object.status == 'AOff' %}
+                                    <td bgcolor="#e74a3b" style="color:#f8f9fc">Аварийное откл.</td>
+                                {% endif %}
+                                {% if object.seasoning == 'Seas' %}
+                                    <td>Сезонная</td>
+                                {% elif object.seasoning == 'Fyea' %}
+                                    <td>Круглогодичная</td>
+                                {% endif %}
+                                <td>{{ object.address }}</td>
+                                <td>{{ object.date_creation.isoformat }}</td>
+                                <td><a href="{% url 'show_tasks' id=object.id %}"
+                                       class="btn btn-primary btn-sm">{{ object.tasks.count }}</a></td>
+                                <td>{{ object.id }}</td>
+                                <td>{{ object.id }}</td>
+                                {% if user.request.is_superuser %}
+                                    <td>
+                                        <a href="{% url 'object_del' id=object.id %}"
+                                           onclick="return confirm('Вы точно хотите удалить объект?')"
+                                           class="btn btn-danger btn-sm">x
+                                        </a>
+                                    </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% if request.user.is_superuser %}
+                        <div class="m-t-20">
+                            <a href="{% url 'card' id=0 %}">
+                                <button type="submit" class="btn btn-success waves-effect waves-light m-l-10 btn-md"
+                                        name="isSaved" value="1">+Добавить объект
+                                </button>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
